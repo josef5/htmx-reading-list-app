@@ -1,4 +1,6 @@
 import express from "express";
+import BOOKS_DATA from "./data/data.js";
+import createBookTemplate from "./views/book.js";
 import createHomepageTemplate from "./views/index.js";
 import createListTemplate from "./views/list.js";
 
@@ -16,6 +18,23 @@ app.get("/", (req, res) => {
 
 app.get("/books", (req, res) => {
   res.send(createListTemplate());
+});
+
+app.post("/books", (req, res) => {
+  const { title, author } = req.body;
+  const id = Math.random().toString();
+
+  BOOKS_DATA.push({ id, title, author });
+
+  res.redirect(`/books/${id}`);
+  // res.send(`<li>${title}, ${author}</li>`);
+});
+
+app.get("/books/:id", (req, res) => {
+  const { id } = req.params;
+  const book = BOOKS_DATA.find((b) => b.id === id);
+
+  res.send(createBookTemplate(book));
 });
 
 // listen to port
