@@ -27,7 +27,6 @@ app.post("/books", (req, res) => {
   BOOKS_DATA.push({ id, title, author });
 
   res.redirect(`/books/${id}`);
-  // res.send(`<li>${title}, ${author}</li>`);
 });
 
 app.get("/books/:id", (req, res) => {
@@ -35,6 +34,14 @@ app.get("/books/:id", (req, res) => {
   const book = BOOKS_DATA.find((b) => b.id === id);
 
   res.send(createBookTemplate(book));
+});
+
+app.delete("/books/:id", (req, res) => {
+  const { id } = req.params;
+  const index = BOOKS_DATA.findIndex((b) => b.id === id);
+  BOOKS_DATA.splice(index, 1);
+
+  res.send();
 });
 
 // listen to port
